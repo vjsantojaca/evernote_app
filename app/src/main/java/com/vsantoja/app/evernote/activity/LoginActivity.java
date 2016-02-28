@@ -45,8 +45,10 @@ public class LoginActivity extends AppCompatActivity implements EvernoteLoginFra
     {
         if( successful ) {
             Log.d(TAG, "Login Finish OK");
+            finish();
         } else {
             Log.d(TAG, "Login Finish NOT OK");
+            mButton.setEnabled(true);
         }
     }
 }
