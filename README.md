@@ -22,7 +22,7 @@ private static final String CONSUMER_KEY = "Your consumer key";
 private static final String CONSUMER_SECRET = "Your consumer secret";
 ```
 
-Define a application class for initialize the EvernoteSession (asSingleton) that has all of the information that we need to authenticate to Evernote. Initialize the session of the api in a class that extends of application class to avoid having to pass the object between the different activities.
+Initialize the session of the api (with the info to authentificate to Evernote) in a class that extends of application class to avoid having to pass the object between the different activities.
 
 ```
 mEvernoteSession = new EvernoteSession.Builder(this)
@@ -32,7 +32,15 @@ mEvernoteSession = new EvernoteSession.Builder(this)
 ```
 
 ##Login in Evernote API
-
+In Application.class I register a callback
+```
+registerActivityLifecycleCallbacks(new LoginChecker());
+```
+This callback checks if already it logged into the application with a user account. If the user is already logged (in Evernote API), the main activity (ListActivity, list notes) will open, otherwise it'll start the activity to Login (LoginActivity).
+```
+EvernoteSession.getInstance().authenticate(LoginActivity.this);
+```
+In this activity, pressing the button, it'll open evernote page to authenticate the user.
 
 ##List Notes
 
