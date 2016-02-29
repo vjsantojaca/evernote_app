@@ -21,6 +21,7 @@ public class Application extends android.app.Application
         new EvernoteSession.Builder(this)
                 .setEvernoteService(Constants.EVERNOTE_SERVICE)
                 .setForceAuthenticationInThirdPartyApp(true)
+                .setSupportAppLinkedNotebooks(true)
                 .build(Constants.CONSUMER_KEY, Constants.CONSUMER_SECRET)
                 .asSingleton();
 

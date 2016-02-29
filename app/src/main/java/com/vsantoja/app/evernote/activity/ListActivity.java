@@ -10,12 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.evernote.client.android.EvernoteSession;
 import com.evernote.client.android.asyncclient.EvernoteCallback;
 import com.evernote.client.android.asyncclient.EvernoteSearchHelper;
-import com.evernote.client.android.type.NoteRef;
 import com.evernote.edam.notestore.NoteFilter;
 import com.evernote.edam.notestore.NoteMetadata;
 import com.evernote.edam.type.NoteSortOrder;
@@ -34,6 +36,7 @@ public class ListActivity extends AppCompatActivity
 	private List<NoteEvernote> notes;
 	private NoteFilter noteFilter;
     private RecyclerView recyclerView;
+	private Spinner spinner;
 	private RecyclerViewAdapter recyclerViewAdapter;
 	private Boolean moreNotes = true;
 	private int lastFirstVisible = -1;
@@ -50,8 +53,13 @@ public class ListActivity extends AppCompatActivity
 
 	    notes = new LinkedList<>();
 
+	    spinner = (Spinner) findViewById(R.id.options_spinner);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_notes);
         add = (FloatingActionButton) findViewById(R.id.add);
+
+	    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.option_spinner, android.R.layout.simple_spinner_item);
+	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	    spinner.setAdapter(adapter);
 
 	    final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 	    recyclerView.setLayoutManager(linearLayoutManager);
@@ -70,10 +78,43 @@ public class ListActivity extends AppCompatActivity
         }
 
 	    noteFilter = new NoteFilter();
-	    noteFilter.setOrder(NoteSortOrder.TITLE.getValue());
-	    noteFilter.setAscending(true);
 
-	    getNotes();
+	    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		    @Override
+		    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+		    {
+			    Log.d(TAG, "Position:" + position);
+			    switch (position) {
+				    case 0:
+					    noteFilter.setOrder(NoteSortOrder.TITLE.getValue());
+					    noteFilter.setAscending(true);
+					    notes.clear();
+					    recyclerViewAdapter.notifyDataSetChanged();
+					    moreNotes = true;
+					    lastFirstVisible = -1;
+					    lastVisibleCount = -1;
+					    lastItemCount = -1;
+					    offset = 0;
+					    getNotes();
+					    break;
+				    case 1:
+					    noteFilter.setOrder(NoteSortOrder.CREATED.getValue());
+					    noteFilter.setAscending(false);
+					    notes.clear();
+					    recyclerViewAdapter.notifyDataSetChanged();
+					    moreNotes = true;
+					    lastFirstVisible = -1;
+					    lastVisibleCount = -1;
+					    lastItemCount = -1;
+					    offset = 0;
+					    getNotes();
+					    break;
+			    }
+		    }
+
+		    @Override
+		    public void onNothingSelected(AdapterView<?> parent) {}
+	    });
 
 	    recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
 	    {
@@ -162,10 +203,13 @@ public class ListActivity extends AppCompatActivity
 			View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
 			RecyclerView.ViewHolder viewHolder = new ViewHolder(itemView);
 
-			itemView.setOnClickListener(new View.OnClickListener() {
+			itemView.setOnClickListener(new View.OnClickListener()
+			{
 				@Override
-				public void onClick(View v) {
+				public void onClick(View v)
+				{
 					Log.d(TAG, "Click note");
+
 				}
 			});
 
