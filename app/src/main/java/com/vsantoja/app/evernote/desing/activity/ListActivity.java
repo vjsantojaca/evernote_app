@@ -2,6 +2,7 @@ package com.vsantoja.app.evernote.desing.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +21,9 @@ import com.evernote.client.android.asyncclient.EvernoteCallback;
 import com.evernote.client.android.asyncclient.EvernoteSearchHelper;
 import com.evernote.edam.notestore.NoteFilter;
 import com.evernote.edam.notestore.NoteMetadata;
+import com.evernote.edam.type.Note;
 import com.evernote.edam.type.NoteSortOrder;
+import com.vsantoja.app.evernote.desing.InfoNoteDialogFragment;
 import com.vsantoja.app.evernote.utils.Constants;
 import com.vsantoja.app.evernote.R;
 import com.vsantoja.app.evernote.bean.NoteEvernote;
@@ -209,6 +212,25 @@ public class ListActivity extends AppCompatActivity
 				public void onClick(View v)
 				{
 					Log.d(TAG, "Click note");
+					int position = recyclerView.getChildAdapterPosition(v);
+					final NoteEvernote note = notes.get(position);
+
+					EvernoteSession.getInstance().getEvernoteClientFactory().getNoteStoreClient().getNoteAsync(note.getGuid(), true, false, false, false, new EvernoteCallback<Note>() {
+						@Override
+						public void onSuccess(Note result) {
+							note.setContent(result.getContent());
+							FragmentManager fm = getSupportFragmentManager();
+							InfoNoteDialogFragment infoNoteDialogFragment = InfoNoteDialogFragment.newInstance(note);
+							infoNoteDialogFragment.show(fm, "Info Nota");
+						}
+
+						@Override
+						public void onException(Exception exception) {
+
+						}
+					});
+
+
 
 				}
 			});
