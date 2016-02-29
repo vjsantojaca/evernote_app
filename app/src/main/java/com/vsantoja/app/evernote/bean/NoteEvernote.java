@@ -1,9 +1,11 @@
 package com.vsantoja.app.evernote.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by vsantoja on 29/02/16.
  */
-public class NoteEvernote
+public class NoteEvernote implements Serializable
 {
 	private String guid;
 	private String guidNoteBook;
