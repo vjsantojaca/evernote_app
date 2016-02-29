@@ -17,6 +17,7 @@ import com.evernote.client.android.asyncclient.EvernoteCallback;
 import com.evernote.client.android.asyncclient.EvernoteSearchHelper;
 import com.evernote.client.android.type.NoteRef;
 import com.evernote.edam.notestore.NoteFilter;
+import com.evernote.edam.notestore.NoteMetadata;
 import com.evernote.edam.type.NoteSortOrder;
 import com.vsantoja.app.evernote.Constants;
 import com.vsantoja.app.evernote.R;
@@ -80,20 +81,18 @@ public class ListActivity extends AppCompatActivity
 		    public void onScrolled(RecyclerView recyclerView, int dx, int dy)
 		    {
 			    LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+				int firstVisible = layoutManager.findFirstVisibleItemPosition();
+				int visibleCount = Math.abs(firstVisible - layoutManager.findLastVisibleItemPosition());
+				int itemCount = recyclerView.getAdapter().getItemCount();
 
-			    int firstVisible = layoutManager.findFirstVisibleItemPosition();
-			    int visibleCount = Math.abs(firstVisible - layoutManager.findLastVisibleItemPosition());
-			    int itemCount = recyclerView.getAdapter().getItemCount();
-
-			    if (firstVisible != lastFirstVisible || visibleCount != lastVisibleCount
-					    || itemCount != lastItemCount)
-			    {
-				    lastFirstVisible = firstVisible;
-				    lastVisibleCount = visibleCount;
-				    lastItemCount = itemCount;
-				    if( moreNotes )
-				        getNotes();
-			    }
+				if (firstVisible != lastFirstVisible || visibleCount != lastVisibleCount
+						|| itemCount != lastItemCount) {
+					lastFirstVisible = firstVisible;
+					lastVisibleCount = visibleCount;
+					lastItemCount = itemCount;
+					if (moreNotes)
+						getNotes();
+				}
 		    }
 	    });
     }
@@ -111,9 +110,15 @@ public class ListActivity extends AppCompatActivity
 			@Override
 			public void onSuccess(EvernoteSearchHelper.Result result)
 			{
-				if( result.getAllAsNoteRef().size() > 0 ) {
-					Log.d(TAG, "Result: " + result.getAllAsNoteRef().size());
-					for (NoteRef noteRef : result.getAllAsNoteRef()) {
+				if( result.getAllAsNoteRef().size() > 0 )
+				{
+					/*
+						First I use getAllAsNotes but this method return all notes without offset and maxnotes.
+						Looking the logs and using debug, I have found that the first object of the
+							list PersonalResult are the notes that would correct (we ordered EvernoteSearchHelper)
+					 */
+					Log.d(TAG, "Result: " + result.getPersonalResults().get(0).getNotesSize());
+					for (NoteMetadata noteRef : result.getPersonalResults().get(0).getNotes()) {
 						NoteEvernote noteEvernote = new NoteEvernote();
 						noteEvernote.setGuid(noteRef.getGuid());
 						noteEvernote.setGuidNoteBook(noteRef.getNotebookGuid());
