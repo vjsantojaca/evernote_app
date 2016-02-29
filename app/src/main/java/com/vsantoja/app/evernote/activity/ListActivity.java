@@ -31,8 +31,14 @@ public class ListActivity extends AppCompatActivity
 
     private FloatingActionButton add;
 	private List<NoteEvernote> notes;
+	private NoteFilter noteFilter;
     private RecyclerView recyclerView;
 	private RecyclerViewAdapter recyclerViewAdapter;
+	private Boolean moreNotes = true;
+	private int lastFirstVisible = -1;
+	private int lastVisibleCount = -1;
+	private int lastItemCount = -1;
+	private int offset = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,7 @@ public class ListActivity extends AppCompatActivity
 	    final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 	    recyclerView.setLayoutManager(linearLayoutManager);
 	    recyclerViewAdapter = new RecyclerViewAdapter();
+	    recyclerView.setAdapter(recyclerViewAdapter);
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,37 +68,73 @@ public class ListActivity extends AppCompatActivity
             return;
         }
 
-	    final NoteFilter noteFilter = new NoteFilter();
+	    noteFilter = new NoteFilter();
 	    noteFilter.setOrder(NoteSortOrder.TITLE.getValue());
-	    EvernoteSearchHelper.Search mSearch = new EvernoteSearchHelper.Search()
-			    .setOffset(0)
-			    .setMaxNotes(Constants.OFFSET_NOTES)
-			    .setNoteFilter(noteFilter);
+	    noteFilter.setAscending(true);
 
-	    EvernoteSession.getInstance().getEvernoteClientFactory().getEvernoteSearchHelper().executeAsync(mSearch, new EvernoteCallback<EvernoteSearchHelper.Result>() {
+	    getNotes();
+
+	    recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+	    {
 		    @Override
-		    public void onSuccess(EvernoteSearchHelper.Result result)
+		    public void onScrolled(RecyclerView recyclerView, int dx, int dy)
 		    {
-			    Log.d(TAG,"Result: " + result.getAllAsNoteRef().size());
-			    for( NoteRef noteRef: result.getAllAsNoteRef())
+			    LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+
+			    int firstVisible = layoutManager.findFirstVisibleItemPosition();
+			    int visibleCount = Math.abs(firstVisible - layoutManager.findLastVisibleItemPosition());
+			    int itemCount = recyclerView.getAdapter().getItemCount();
+
+			    if (firstVisible != lastFirstVisible || visibleCount != lastVisibleCount
+					    || itemCount != lastItemCount)
 			    {
-				    NoteEvernote noteEvernote = new NoteEvernote();
-				    noteEvernote.setGuid(noteRef.getGuid());
-				    noteEvernote.setGuidNoteBook(noteRef.getNotebookGuid());
-				    noteEvernote.setTitle(noteRef.getTitle());
-				    notes.add(noteEvernote);
+				    lastFirstVisible = firstVisible;
+				    lastVisibleCount = visibleCount;
+				    lastItemCount = itemCount;
+				    if( moreNotes )
+				        getNotes();
 			    }
-
-			    recyclerView.setAdapter(recyclerViewAdapter);
-		    }
-
-		    @Override
-		    public void onException(Exception exception)
-		    {
-			    Log.d(TAG,"Error: " + exception.getMessage());
 		    }
 	    });
     }
+
+	public void getNotes()
+	{
+		EvernoteSearchHelper.Search mSearch = new EvernoteSearchHelper.Search()
+				.setOffset(offset)
+				.setMaxNotes(offset + Constants.MAX_NOTES)
+				.setNoteFilter(noteFilter);
+
+		offset += Constants.MAX_NOTES;
+
+		EvernoteSession.getInstance().getEvernoteClientFactory().getEvernoteSearchHelper().executeAsync(mSearch, new EvernoteCallback<EvernoteSearchHelper.Result>() {
+			@Override
+			public void onSuccess(EvernoteSearchHelper.Result result)
+			{
+				if( result.getAllAsNoteRef().size() > 0 ) {
+					Log.d(TAG, "Result: " + result.getAllAsNoteRef().size());
+					for (NoteRef noteRef : result.getAllAsNoteRef()) {
+						NoteEvernote noteEvernote = new NoteEvernote();
+						noteEvernote.setGuid(noteRef.getGuid());
+						noteEvernote.setGuidNoteBook(noteRef.getNotebookGuid());
+						noteEvernote.setTitle(noteRef.getTitle());
+						notes.add(noteEvernote);
+					}
+
+					recyclerViewAdapter.notifyItemRangeInserted(offset, offset + Constants.MAX_NOTES);
+				} else {
+					Log.d(TAG, "No more notes");
+					moreNotes = false;
+				}
+			}
+
+			@Override
+			public void onException(Exception exception)
+			{
+				Log.d(TAG,"Error: " + exception.getMessage());
+			}
+		});
+	}
 
 	public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 	{
@@ -132,7 +175,10 @@ public class ListActivity extends AppCompatActivity
 
 		@Override
 		public int getItemCount() {
-			return notes.size();
+			if( notes.size() > 0 )
+				return notes.size();
+			else
+				return 0;
 		}
 	}
 }
