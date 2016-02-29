@@ -3,4 +3,9 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_list">ListActivity</string>
     <string name="label_login">Login</string>
+
+    <string-array name="option_spinner">
+        <item>Titulo</item>
+        <item>Fecha</item>
+    </string-array>
 </resources>

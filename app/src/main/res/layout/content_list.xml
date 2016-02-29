@@ -12,8 +12,15 @@
     tools:context="com.vsantoja.app.evernote.activity.ListActivity"
     tools:showIn="@layout/activity_list">
 
+    <Spinner
+        android:id="@+id/options_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_notes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/options_spinner"/>
 </RelativeLayout>
