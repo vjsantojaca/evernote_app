@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.vsantoja.app.evernote.activity.ListActivity">
+    tools:context=".desing.activity.ListActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

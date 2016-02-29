@@ -1,4 +1,4 @@
-package com.vsantoja.app.evernote.activity;
+package com.vsantoja.app.evernote.desing.activity;
 
 import android.app.Activity;
 import android.content.Intent;

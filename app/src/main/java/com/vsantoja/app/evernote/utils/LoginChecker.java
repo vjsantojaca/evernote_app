@@ -1,14 +1,15 @@
-package com.vsantoja.app.evernote;
+package com.vsantoja.app.evernote.utils;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.evernote.client.android.EvernoteOAuthActivity;
 import com.evernote.client.android.EvernoteSession;
 import com.evernote.client.android.login.EvernoteLoginActivity;
-import com.vsantoja.app.evernote.activity.ListActivity;
-import com.vsantoja.app.evernote.activity.LoginActivity;
+import com.vsantoja.app.evernote.desing.activity.ListActivity;
+import com.vsantoja.app.evernote.desing.activity.LoginActivity;
 
 import java.util.Arrays;
 import java.util.List;

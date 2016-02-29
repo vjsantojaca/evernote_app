@@ -3,6 +3,8 @@ package com.vsantoja.app.evernote;
 import android.util.Log;
 
 import com.evernote.client.android.EvernoteSession;
+import com.vsantoja.app.evernote.utils.Constants;
+import com.vsantoja.app.evernote.utils.LoginChecker;
 
 /**
  * Created by vsantoja on 28/02/16.

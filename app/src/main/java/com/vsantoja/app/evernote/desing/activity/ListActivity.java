@@ -1,4 +1,4 @@
-package com.vsantoja.app.evernote.activity;
+package com.vsantoja.app.evernote.desing.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,7 +21,7 @@ import com.evernote.client.android.asyncclient.EvernoteSearchHelper;
 import com.evernote.edam.notestore.NoteFilter;
 import com.evernote.edam.notestore.NoteMetadata;
 import com.evernote.edam.type.NoteSortOrder;
-import com.vsantoja.app.evernote.Constants;
+import com.vsantoja.app.evernote.utils.Constants;
 import com.vsantoja.app.evernote.R;
 import com.vsantoja.app.evernote.bean.NoteEvernote;
 

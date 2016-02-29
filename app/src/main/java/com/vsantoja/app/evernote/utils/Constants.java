@@ -1,4 +1,4 @@
-package com.vsantoja.app.evernote;
+package com.vsantoja.app.evernote.utils;
 
 import com.evernote.client.android.EvernoteSession;
 
