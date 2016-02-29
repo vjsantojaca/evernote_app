@@ -11,5 +11,5 @@ public class Constants
     public static final String CONSUMER_SECRET = "5de1377be2e686d1";
     public static final EvernoteSession.EvernoteService EVERNOTE_SERVICE = EvernoteSession.EvernoteService.SANDBOX;
 
-    public static final int MAX_NOTES = 20;
+    public static final int MAX_NOTES = 30;
 }
