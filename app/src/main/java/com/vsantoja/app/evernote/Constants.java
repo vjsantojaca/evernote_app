@@ -10,4 +10,6 @@ public class Constants
     public static final String CONSUMER_KEY = "victorsantoja";
     public static final String CONSUMER_SECRET = "5de1377be2e686d1";
     public static final EvernoteSession.EvernoteService EVERNOTE_SERVICE = EvernoteSession.EvernoteService.SANDBOX;
+
+    public static final int OFFSET_NOTES = 20;
 }
