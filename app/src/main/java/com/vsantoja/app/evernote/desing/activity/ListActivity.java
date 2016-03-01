@@ -154,7 +154,7 @@ public class ListActivity extends AppCompatActivity
 			@Override
 			public void onSuccess(EvernoteSearchHelper.Result result)
 			{
-				if( result.getAllAsNoteRef().size() > 0 )
+				if( result.getPersonalResults().size() > 0 )
 				{
 					/*
 						First I use getAllAsNotes but this method return all notes without offset and maxnotes.
