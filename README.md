@@ -43,7 +43,60 @@ EvernoteSession.getInstance().authenticate(LoginActivity.this);
 In this activity, pressing the button, it'll open evernote page to authenticate the user.
 
 ##List Notes
+The notes list screen consists of two parts, a snipper to choose between Title and Date and recyclerview with notes. The snipper is used to sort the listing.
+```
+ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.option_spinner, android.R.layout.simple_spinner_item);
+adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+spinner.setAdapter(adapter);
+```
+To obtain the notes with Evernote API, An object with class type EvernoteSearchHelper is created with the offset, the maxnotes and the filter notes (for filter order by title or by date).
+```
+NoteFilter noteFilter = new NoteFilter();
+EvernoteSearchHelper.Search mSearch = new EvernoteSearchHelper.Search()
+				.setOffset(offset)
+				.setMaxNotes(offset + Constants.MAX_NOTES)
+				.setNoteFilter(noteFilter);
+```
+For this purpose (get the notes) we use an asynchronous execution with mSearch object.
+```
+EvernoteSession.getInstance().getEvernoteClientFactory().getEvernoteSearchHelper().executeAsync(mSearch, new EvernoteCallback<EvernoteSearchHelper.Result>() {
+		@Override
+		public void onSuccess(EvernoteSearchHelper.Result result)
+		{
+		}
+		@Override
+		public void onException(Exception exception)
+		{
+		}
+	});
+}
+```
+The result is a object with information (including Personal Result).
+```
+result.getPersonalResults().get(0).getNotes();
+```
+**PROBLEM**
+*First I use getAllAsNotes method but this method return all notes without offset and maxnotes.Looking the logs and using debug, I have found that the first object of the list that getPersonalResult method returns, are the notes that would correct*
 
+When the recyclerview goes down they are asking for new notes (until we get more) for this we increase the offset and the object Maxnotes search. On the other hand, when a spinner option is selected the search filter is changed and makes a new petition.
+
+```
+ spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		    @Override
+		    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+		    {
+			    switch (position) {
+				    case 0:
+					    noteFilter.setOrder(NoteSortOrder.TITLE.getValue());
+					    noteFilter.setAscending(true);
+					    break;
+				    case 1:
+					    noteFilter.setOrder(NoteSortOrder.CREATED.getValue());
+					    noteFilter.setAscending(false);
+					    break;
+			    }
+		    }
+```
 
 ##Show Info Note
 
