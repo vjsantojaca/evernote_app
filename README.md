@@ -82,23 +82,46 @@ When the recyclerview goes down they are asking for new notes (until we get more
 
 ```
  spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-		    @Override
-		    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-		    {
-			    switch (position) {
-				    case 0:
-					    noteFilter.setOrder(NoteSortOrder.TITLE.getValue());
-					    noteFilter.setAscending(true);
-					    break;
-				    case 1:
-					    noteFilter.setOrder(NoteSortOrder.CREATED.getValue());
-					    noteFilter.setAscending(false);
-					    break;
-			    }
-		    }
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+    {
+	    switch (position) {
+		    case 0:
+			    noteFilter.setOrder(NoteSortOrder.TITLE.getValue());
+			    noteFilter.setAscending(true);
+			    break;
+		    case 1:
+			    noteFilter.setOrder(NoteSortOrder.CREATED.getValue());
+			    noteFilter.setAscending(false);
+			    break;
+	    }
+    }
+}
 ```
 
 ##Show Info Note
+When user taps on an item of recycler view, it opens a dialog with the information note (title and content)
+```
+itemView.setOnClickListener(new View.OnClickListener()
+{
+	@Override
+	public void onClick(View v)
+	{
+		int position = recyclerView.getChildAdapterPosition(v);
+		final NoteEvernote note = notes.get(position);
+		EvernoteSession.getInstance().getEvernoteClientFactory().getNoteStoreClient().getNoteAsync(note.getGuid(), true, false, false, false, new EvernoteCallback<Note>() {
+			@Override
+			public void onSuccess(Note result) {
+				note.setContent(result.getContent());
+				FragmentManager fm = getSupportFragmentManager();
+				InfoNoteDialogFragment infoNoteDialogFragment = InfoNoteDialogFragment.newInstance(note);
+				infoNoteDialogFragment.show(fm, "Info Nota");
+			}
 
-
-#New Note 
+			@Override
+			public void onException(Exception exception) {}
+		});
+	}
+});
+```
+##New Note 
