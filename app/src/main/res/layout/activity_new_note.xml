@@ -36,15 +36,26 @@
 			android:layout_alignParentRight="true"
 			android:layout_margin="6dp"
 			android:src="@android:drawable/ic_menu_camera"/>
-		
+
+		<EditText
+			android:id="@+id/editTextTitle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerVertical="true"
+			android:layout_marginLeft="6dp"
+			android:inputType="textMultiLine"
+			android:ems="6"
+			android:hint="@string/hint_title"/>
+
 		<EditText
 			android:id="@+id/editTextNote"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_centerVertical="true"
+			android:layout_below="@id/editTextTitle"
 			android:layout_centerHorizontal="true"
 			android:inputType="textMultiLine"
-			android:ems="10"/>
+			android:ems="10"
+			android:hint="@string/hint_content"/>
 
 		<Button
 			android:id="@+id/buttonNote"
