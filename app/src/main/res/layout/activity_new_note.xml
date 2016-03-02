@@ -41,20 +41,24 @@
 			android:id="@+id/editTextTitle"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_centerVertical="true"
 			android:layout_marginLeft="6dp"
+			android:layout_below="@id/imageViewCamera"
+			android:layout_marginTop="10dp"
 			android:inputType="textMultiLine"
-			android:ems="6"
+			android:ems="10"
 			android:hint="@string/hint_title"/>
 
 		<EditText
 			android:id="@+id/editTextNote"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
 			android:layout_below="@id/editTextTitle"
+			android:layout_above="@+id/buttonNote"
 			android:layout_centerHorizontal="true"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="10dp"
+			android:layout_marginTop="20dp"
 			android:inputType="textMultiLine"
-			android:ems="10"
 			android:hint="@string/hint_content"/>
 
 		<Button
