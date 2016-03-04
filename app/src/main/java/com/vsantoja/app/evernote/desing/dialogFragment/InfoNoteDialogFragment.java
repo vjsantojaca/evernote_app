@@ -1,4 +1,4 @@
-package com.vsantoja.app.evernote.desing;
+package com.vsantoja.app.evernote.desing.dialogFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
