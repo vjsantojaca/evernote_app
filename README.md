@@ -1,6 +1,6 @@
 #EVERNOTE APP
 
-The application's a test of how to use the API Evernote.
+The application's a test of how to use the API Evernote (The developer api evernote https://sandbox.evernote.com).
 This app can be divided in four parts.
 
 - Login
@@ -125,3 +125,80 @@ itemView.setOnClickListener(new View.OnClickListener()
 });
 ```
 ##New Note 
+The new note screen comprises two EditText, two buttons and an image (clickable). 
+
+- EditText title
+- EditText content
+- Button sendNote (send Note to evernote api)
+- Button drawNote
+- Image (clickable) to open camera
+
+The sendNote Button sends to Evernote API a note with title and content.
+```
+EvernoteNoteStoreClient noteStoreClient = EvernoteSession.getInstance().getEvernoteClientFactory().getNoteStoreClient();
+Note note = new Note();
+note.setTitle(editTextTitle.getText().toString());
+note.setContent(EvernoteUtil.NOTE_PREFIX + editTextNote.getText().toString() + EvernoteUtil.NOTE_SUFFIX);
+
+noteStoreClient.createNoteAsync(note, new EvernoteCallback<Note>() {
+	@Override
+	public void onSuccess(Note result)
+	{
+	}
+	
+	@Override
+	public void onException(Exception exception) {
+		Log.e(TAG, "Error creating note", exception);
+	}
+});
+```
+OCR (Optical Character Recognition) is used for character recognition, for this, it uses a library that add to build.gradle
+```
+compile 'com.rmtheis:tess-two:5.4.1'
+```
+Character recognition also needs language files, in this case we have two, English and Spanish (later chose one of them in the code). This files are a .trainneddata files and save this in the assets directory.
+The OCR is used for the recognice a camera image and a picture draw.
+
+If the user presses the camera image, the camera will open for a photo. After, using the OCR is transformed (this image) into text for the note.
+```
+if( data.getExtras().get("data") != null ) {
+	Bitmap bp = (Bitmap) data.getExtras().get("data");
+
+	TessBaseAPI baseApi = new TessBaseAPI();
+	baseApi.init(DATA_PATH, "spa");
+	baseApi.setImage(toGrayscale(bp));
+	baseApi.setPageSegMode(TessBaseAPI.PageSegMode.PSM_AUTO_OSD);
+	String recognizedText = baseApi.getUTF8Text();
+	Log.d(TAG, "RecognizedText: " + recognizedText);
+	baseApi.end();
+
+	editTextNote.setText(recognizedText);
+}
+```
+This works fine if the image is rotated and if there is more than a few words. That is, an image with complex text does not make it text. (A image to this http://oi64.tinypic.com/e9d64m.jpg)
+
+The other way is drawing on a dialog fragment also be transformed into text using OCR.
+```
+ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+
+TessBaseAPI baseApi = new TessBaseAPI();
+baseApi.setDebug(true);
+baseApi.init(DATA_PATH, "spa");
+baseApi.setImage(toGrayscale(bitmap));
+baseApi.setPageSegMode(TessBaseAPI.PageSegMode.PSM_SPARSE_TEXT_OSD);
+String recognizedText = baseApi.getUTF8Text();
+Log.d(TAG, "RecognizedText: " + recognizedText);
+baseApi.end();
+
+editTextNote.setText(recognizedText);
+```
+**PROBLEM**
+*This way I havn't been able to transform the drawing text. I have found information about this problem (recognizedText is empty) and I found more people happens the same problem as me.*
+- http://stackoverflow.com/questions/29984673/android-recognized-text-from-tess-two-library-is-wrong
+- http://stackoverflow.com/questions/21161352/tess-two-ocr-not-working
+- http://stackoverflow.com/questions/30240780/tess-two-ocr-not-decoding-correctly
+- http://stackoverflow.com/questions/11568085/improve-accuracy-of-android-tessbaseapi-tesseract-ocr
+
+One of the things I've tried is that the image becomes into a grayscale (I found information saying that this could be recognized better), but this only improved recognition of the image captured by the camera and not the drawing.
+I've also been testing with different properties TessBaseAPI to see which of them was better recognition.
