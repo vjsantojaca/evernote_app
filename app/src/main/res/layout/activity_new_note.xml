@@ -28,6 +28,17 @@
 		android:layout_height="match_parent"
 		android:layout_below="@+id/appBarLayout">
 
+		<Button
+			android:id="@+id/buttonDraw"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentLeft="true"
+			android:layout_marginTop="4dp"
+			android:layout_marginLeft="6dp"
+			android:padding="4dp"
+			android:text="@string/draw_button"/>
+
 		<ImageView
 			android:id="@+id/imageViewCamera"
 			android:layout_width="wrap_content"
@@ -42,7 +53,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="6dp"
-			android:layout_below="@id/imageViewCamera"
+			android:layout_below="@id/buttonDraw"
 			android:layout_marginTop="10dp"
 			android:inputType="textMultiLine"
 			android:ems="10"
@@ -70,7 +81,7 @@
 			android:layout_marginBottom="4dp"
 			android:layout_marginRight="6dp"
 			android:padding="4dp"
-			android:text="@string/enviar_button"/>
+			android:text="@string/send_button"/>
 	</RelativeLayout>
 
 </RelativeLayout>

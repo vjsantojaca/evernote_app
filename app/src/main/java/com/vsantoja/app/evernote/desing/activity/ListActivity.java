@@ -24,7 +24,7 @@ import com.evernote.edam.notestore.NoteFilter;
 import com.evernote.edam.notestore.NoteMetadata;
 import com.evernote.edam.type.Note;
 import com.evernote.edam.type.NoteSortOrder;
-import com.vsantoja.app.evernote.desing.InfoNoteDialogFragment;
+import com.vsantoja.app.evernote.desing.dialogFragment.InfoNoteDialogFragment;
 import com.vsantoja.app.evernote.utils.Constants;
 import com.vsantoja.app.evernote.R;
 import com.vsantoja.app.evernote.bean.NoteEvernote;
