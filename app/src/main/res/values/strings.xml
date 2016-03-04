@@ -1,11 +1,18 @@
 <resources>
-    <string name="app_name">Evernote</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_list">ListActivity</string>
-    <string name="label_login">Login</string>
+	<string name="app_name">Evernote</string>
+	<string name="title_activity_login">LoginActivity</string>
+	<string name="title_activity_list">Notes</string>
+	<string name="title_activity_new_note">New Note</string>
+	<string name="label_login">Login</string>
+	<string name="send_button">Send</string>
+	<string name="draw_button">Dibujar</string>
+	<string name="hint_title">Title</string>
+	<string name="hint_content">Content</string>
+	<string name="ok_button">Aceptar</string>
+	<string name="cancel_button">Cancelar</string>
 
-    <string-array name="option_spinner">
-        <item>Titulo</item>
-        <item>Fecha</item>
-    </string-array>
+	<string-array name="option_spinner">
+		<item>Titulo</item>
+		<item>Fecha</item>
+	</string-array>
 </resources>

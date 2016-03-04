@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fitsSystemWindows="true"
+	tools:context="com.vsantoja.app.evernote.desing.activity.NewNoteActivity">
+
+	<android.support.design.widget.AppBarLayout
+		android:id="@+id/appBarLayout"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:theme="@style/AppTheme.AppBarOverlay">
+
+		<android.support.v7.widget.Toolbar
+			android:id="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:background="?attr/colorPrimary"
+			app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
+	</android.support.design.widget.AppBarLayout>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_below="@+id/appBarLayout">
+
+		<Button
+			android:id="@+id/buttonDraw"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentLeft="true"
+			android:layout_marginTop="4dp"
+			android:layout_marginLeft="6dp"
+			android:padding="4dp"
+			android:text="@string/draw_button"/>
+
+		<ImageView
+			android:id="@+id/imageViewCamera"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentRight="true"
+			android:layout_margin="6dp"
+			android:src="@android:drawable/ic_menu_camera"/>
+
+		<EditText
+			android:id="@+id/editTextTitle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="6dp"
+			android:layout_below="@id/buttonDraw"
+			android:layout_marginTop="10dp"
+			android:inputType="textMultiLine"
+			android:ems="10"
+			android:hint="@string/hint_title"/>
+
+		<EditText
+			android:id="@+id/editTextNote"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_below="@id/editTextTitle"
+			android:layout_above="@+id/buttonNote"
+			android:layout_centerHorizontal="true"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="10dp"
+			android:layout_marginTop="20dp"
+			android:inputType="textMultiLine"
+			android:hint="@string/hint_content"/>
+
+		<Button
+			android:id="@+id/buttonNote"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentRight="true"
+			android:layout_marginBottom="4dp"
+			android:layout_marginRight="6dp"
+			android:padding="4dp"
+			android:text="@string/send_button"/>
+	</RelativeLayout>
+
+</RelativeLayout>

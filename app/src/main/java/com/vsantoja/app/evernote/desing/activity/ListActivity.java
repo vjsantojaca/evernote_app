@@ -1,5 +1,6 @@
 package com.vsantoja.app.evernote.desing.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -23,7 +24,7 @@ import com.evernote.edam.notestore.NoteFilter;
 import com.evernote.edam.notestore.NoteMetadata;
 import com.evernote.edam.type.Note;
 import com.evernote.edam.type.NoteSortOrder;
-import com.vsantoja.app.evernote.desing.InfoNoteDialogFragment;
+import com.vsantoja.app.evernote.desing.dialogFragment.InfoNoteDialogFragment;
 import com.vsantoja.app.evernote.utils.Constants;
 import com.vsantoja.app.evernote.R;
 import com.vsantoja.app.evernote.bean.NoteEvernote;
@@ -71,8 +72,12 @@ public class ListActivity extends AppCompatActivity
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Log.d(TAG, "New note");
+	            Intent intent = new Intent(getApplicationContext(), NewNoteActivity.class);
+	            startActivity(intent);
+	            finish();
             }
         });
 
